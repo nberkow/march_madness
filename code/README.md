@@ -1,5 +1,5 @@
-### NCAA Ball Lightning
-# A purposfully silly algorithm for filling out a NCAA Basketball Tournament bracket
+# NCAA Ball Lightning
+### A purposfully silly algorithm for filling out a NCAA Basketball Tournament bracket
 
 - Conststruct a directed graph of all teams
 - Parse the season records to get win/loss records
@@ -12,6 +12,8 @@
 
 I made a bracket in 2019, but it didn't win
 
-# Input data from here
+### Input data from here
 https://github.com/lbenz730/NCAA_Hoops/blob/master/3.0_Files/Results/2018-19/NCAA_Hoops_Results_3_9_2019.csv
+
+### FIXME: Usage.
 
