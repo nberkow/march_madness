@@ -6,9 +6,9 @@
 - An edge from Node A to Node B means team A beat team B in a game
 - Many edges may connect two nodes
 - To predict a winner: 
--- Start at Node A and randomly discover paths to Node B
--- Start at B and find paths to A
--- The team with the longest path wins
+- Start at Node A and randomly discover paths to Node B
+- Start at B and find paths to A
+- The team with the longest path wins
 
 I made a bracket in 2019, but it didn't win
 
