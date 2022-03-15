@@ -1,40 +1,42 @@
-from graph_node import graph_node
+from graph_tools import *
 import sys
 import random
+from datetime import datetime
 
 if __name__ == "__main__":
 
-    def get_edge_chain(edge_chain, edge_chain_diff, visited_nodes, node, target_id):
+    def traverse_edges(starting_node, target_id, max_traversal_len, nodes):
 
-        # if we've hit the target return the chain of jumps
-        if node.node_id == target_id:
-            return(edge_chain, edge_chain_diff)
+        used_edges = set()
+        edge_chain = []
+        edges_to_follow = starting_node.edges
+        i = 0
+        j = random.randint(0, len(edges_to_follow) - 1)
+        r = edges_to_follow[j]
+        used_edges.add(r)
+        i += 1
 
-        else:
+        keep_going = True
+        while keep_going:
+            node = nodes[r.loser]
+            if node.node_id == target_id:
+                return(edge_chain)
 
-            # eliminate already checked nodes
-            nodes_to_check = []
-            scores = []
+            edges_to_follow = []
             for e in node.edges:
-                n = e[1]
-                s = int(e[2])
-                if n not in visited_nodes:
-                    nodes_to_check.append(n)
-                    scores.append(s)
-
-            # if all out edges are checked, just return
-            if len(nodes_to_check) == 0:
-                return([], 0)
+                if e not in used_edges:
+                    edges_to_follow.append(e)
+                    
+            if len(edges_to_follow) == 0 or i > max_traversal_len:
+                keep_going = False
+                return([])
 
             else:
-                j = random.randint(0, len(nodes_to_check) - 1)
-                r = nodes_to_check[j]
-                sc = scores[j]
+                j = random.randint(0, len(edges_to_follow) - 1)
+                r = edges_to_follow[j]
+                used_edges.add(r)
                 edge_chain.append(r)
-                edge_chain_diff += sc
-                visited_nodes.add(r)
-                next_node = nodes[r]
-                return(get_edge_chain(edge_chain, edge_chain_diff, visited_nodes, next_node, target_id))
+
 
     random.seed(11)
     game_record_file = open(sys.argv[1], 'r')
@@ -44,29 +46,48 @@ if __name__ == "__main__":
     edges = {}
 
     # build the graph in memory
+    game_record_file.readline()
     for e in game_record_file:
-        winner, loser, score_diff = e.rstrip().split("\t")
-        if not winner in node_ids:
-            winner_node = graph_node()
-            winner_node.node_id = winner
-            nodes[winner] = winner_node
-            node_ids.add(winner)
+        year, month, day, team, opponent, location, teamscore, oppscore, canceled, postponed, ot, d1 = e.rstrip().split(",")
+        team = team[1:-1]
+        opponent = opponent[1:-1]
 
-        if not loser in node_ids:
-            loser_node = graph_node()
-            loser_node.node_id = loser
-            nodes[loser] = loser_node
-            node_ids.add(loser)
- 
-        winner_edge = (winner, loser, int(score_diff))
-        #loser_edge = (loser, winner, -int(score_diff))
+        if teamscore != 'NA' and oppscore != 'NA':
 
-        nodes[winner].edges.append(winner_edge)
-        #nodes[loser].edges.append(loser_edge)
+            ts = int(teamscore)
+            os = int(oppscore)
+
+            if ts > os:
+                winner = team
+                loser = opponent
+                winner_score = teamscore
+                loser_score = oppscore
+
+            else:
+                winner = opponent
+                loser = team
+                winner_score = oppscore
+                loser_score = teamscore
+
+            if not winner in node_ids:
+                winner_node = graph_node()
+                winner_node.node_id = winner
+                nodes[winner] = winner_node
+                node_ids.add(winner)
+
+            if not loser in node_ids:
+                loser_node = graph_node()
+                loser_node.node_id = loser
+                nodes[loser] = loser_node
+                node_ids.add(loser)
+    
+            winner_edge = graph_edge(winner, loser, winner_score, loser_score, year, month, day)
+            nodes[winner].edges.append(winner_edge)
 
     bracket = open(sys.argv[2], 'r').readlines()
     next_round = []
     longest_overall = []
+    final_date = datetime(2022, 9, 3)
 
     while len(bracket) > 1:
         for b in range(int(len(bracket)/2)):
@@ -76,60 +97,65 @@ if __name__ == "__main__":
 
             win_paths_1 = 0
             weighted_1 = 0.
+            best_points_1 = 0.
             longest_path_1 = 0
             total_point_diff_1 = 0
+            edge_list_scores_1 = []
             for i in range(10000):
-                edge_list, diff = get_edge_chain([s1], 0, set(s1), nodes[s1], s2)
+                edge_list = traverse_edges(nodes[s1], s2, 100000, nodes)
                 if len(edge_list) > len(longest_overall):
                     longest_overall = edge_list
                 if len(edge_list) > 1:
-                    #print(edge_list)
                     win_paths_1 += 1
                     weighted_1 += 1.0/(len(edge_list))
                     if len(edge_list) > longest_path_1:
                         longest_path_1 = len(edge_list)
-                    total_point_diff_1 += diff
+                    #total_point_diff_1 += diff
+                    ec_sum_1 = sum_edge_chain(edge_list, final_date)
+                    edge_list_scores_1.append(ec_sum_1)
 
 
             win_paths_2 = 0
             weighted_2 = 0.
+            best_points_2 = 0.
             longest_path_2 = 0
             total_point_diff_2 = 0
+            edge_list_scores_2 = []
             for i in range(10000):
-                edge_list, diff = get_edge_chain([s2], 0, set(s2), nodes[s2], s1)
+                edge_list = traverse_edges(nodes[s2], s1, 100000, nodes)
 
                 if len(edge_list) > len(longest_overall):
                     longest_overall = edge_list
                 if len(edge_list) > 1:
-                    #print(edge_list)
                     win_paths_2 += 1
                     weighted_2 += 1.0/(len(edge_list))
                     if len(edge_list) > longest_path_2:
                         longest_path_2 = len(edge_list)
-                    total_point_diff_2 += diff
+                    #total_point_diff_2 += diff
+                    ec_sum_2 = sum_edge_chain(edge_list, final_date)
+                    edge_list_scores_2.append(ec_sum_2)
 
-            """
-            if win_paths_1 > win_paths_2:
-                winner = s1
-            elif win_paths_2 > win_paths_1:
-                winner = s2
+            if len(edge_list_scores_1) == 0:
+                a1 = 0
             else:
-                winner = [s1, s2][random.randint(0, 1)]
+                a1 = sum(edge_list_scores_1)/len(edge_list_scores_1)
 
-            """
-            if longest_path_1 > longest_path_2:
+            if len(edge_list_scores_2) == 0:
+                a2 = 0
+            else:
+                a2 = sum(edge_list_scores_2)/len(edge_list_scores_2)
+
+            if a1 > a2:
                 winner = s1
-            elif longest_path_2 > longest_path_1:
+            elif a2 > a1:
                 winner = s2
             else:
                 winner = [s1, s2][random.randint(0, 1)]
 
             next_round.append(winner)
 
-            print("{}\t{}\t{}\t{}\t\t{}\t{}".format(winner, longest_path_1, longest_path_2, win_paths_1, win_paths_2, weighted_1, weighted_2))
+            print(f"{winner}\t{a1}\t{a2}")
 
         bracket = [] + next_round
         next_round = []
-    print(len(longest_overall))
-    print(longest_overall)
 
