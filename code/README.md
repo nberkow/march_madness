@@ -1,5 +1,5 @@
 # NCAA Ball Lightning
-### A purposfully silly algorithm for filling out a NCAA Basketball Tournament bracket
+### A purposfully silly algorithm for filling out an NCAA Basketball Tournament bracket
 
 - Conststruct a directed graph of all teams
 - Parse the season records to get win/loss records
