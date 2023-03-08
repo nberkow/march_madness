@@ -17,3 +17,12 @@ https://github.com/lbenz730/NCAA_Hoops/blob/master/3.0_Files/Results/2018-19/NCA
 
 ### FIXME: Usage.
 
+# NCAA Simulator
+### An algorithm for imputing and simulating games and predicting a March Madness winner
+
+- Read in the win/loss records for all teams
+- Do simulated matchups (ignoring conferences and other real world conventions)
+- Teams win or lose based on their score records and the score records of their opponents
+- Winning teams are awarded wins with scores based on their actual winning games
+- Run the tournament!
+
