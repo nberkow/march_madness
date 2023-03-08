@@ -28,5 +28,5 @@ I made a bracket in 2019, but it didn't win
 
 
 ### Input data from here
-https://github.com/lbenz730/NCAA_Hoops/blob/master/3.0_Files/Results/2018-19/NCAA_Hoops_Results_3_9_2019.csv
+https://github.com/lbenz730/NCAA_Hoops/blob/master/3.0_Files/Results/
 
