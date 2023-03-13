@@ -2,13 +2,18 @@ import datetime
 import statistics
 import random
 import math
+import sys
 
 class ncaa_simulator:
 
-    def simulate_tournament(self, win_records, bracket):
+    def simulate_tournament(self, win_records, bracket_file):
 
         print("simulating tournament")
         teams = 64
+        bracket = []
+        with open(bracket_file) as bfl:
+            for t in bfl:
+                bracket.append(t.rstrip())
 
         for round in range(6):
             new_bracket = []
@@ -272,19 +277,11 @@ class ncaa_simulator:
 
 if __name__ == "__main__":
 
-    sim = ncaa_simulator()
+    seed, win_record_file, bracket_file = int(sys.argv[1]), sys.argv[2], sys.argv[3]
+    random.seed(seed)
+
+    sim = ncaa_simulator(win_record_file)
     win_rec = sim.bootstrap_first_season()
     for x in range(5):       
         print(x)
-        
-    bracket = [
-      "team_1_div_1",
-      "team16_div_1",
-      "team2_div_1",
-      "team15_div_1",
-      ...
-      "team_7_div_4",
-      "team_8_div_4",
-    ]
-    
-    sim.simulate_tournament(win_rec, bracket)  
+    sim.simulate_tournament(win_rec, bracket_file)  

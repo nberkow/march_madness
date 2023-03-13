@@ -1,30 +1,35 @@
-# NCAA Ball Lightning
+# Two algorithms for predicting the result of an NCAA tournamet:
+
+## NCAA Ball Lightning
 ### A purposfully silly algorithm for filling out a NCAA Basketball Tournament bracket
 
-- Conststruct a directed graph of all teams
-- Parse the season records to get win/loss records
-- An edge from Node A to Node B means team A beat team B in a game
-- Many edges may connect two nodes
-- To predict a winner: 
-- Start at Node A and randomly discover paths to Node B
-- Start at B and find paths to A
-- The team with the longest path wins
+* Conststruct a directed graph of all teams
+* Parse the season records to get win/loss records
+* An edge from Node A to Node B means team A beat team B in a game
+* The weight of an egde reflects
+  * how recent the win was
+  * how big the score difference was
+  * how different the two teams win records are for the season
+* To predict a winner: 
+  * randomly find paths from A to B with n tries
+  * randomly find paths from B to A with n tries
+  * longest most improbable path wins!
 
-I made a bracket in 2019, but it didn't win
+  usage: python3 ball_lightning.py seed season_file.txt bracket_file.txt
 
-### FIXME: Usage.
-
-
-
-
-# NCAA Simulator
+## NCAA Simulator
 ### An extremely serious algorithm for imputing and simulating games and predicting a March Madness winner
 
-- Read in the win/loss records for all teams
-- Do simulated matchups (ignoring conferences and other real world conventions)
-- Teams win or lose based on their score records and the score records of their opponents
-- Winning teams are awarded wins with scores based on their actual winning games
-- Run the tournament!
+* Read in the win/loss records for all teams
+* Do simulated matchups (ignoring conferences and other real world conventions)
+* Teams win or lose based on their score records and the score records of their opponents
+* Winning teams are awarded wins with scores based on their actual winning games
+* Run the tournament!
+
+usage: python3 ball_lightning.py seed season_file.txt bracket_file.txt
+
+example season and bracket files in test_data
+seed = your favorite integer
 
 
 ### Input data from here
