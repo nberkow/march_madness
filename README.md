@@ -15,7 +15,11 @@
   * randomly find paths from B to A with n tries
   * longest most improbable path wins!
 
-  usage: python3 ball_lightning.py seed season_file.txt bracket_file.txt
+usage: python3 ball_lightning.py seed season_file.txt bracket_file.txt
+  
+example season and bracket files in test_data
+
+seed = your favorite integer
 
 ## NCAA Simulator
 ### An extremely serious algorithm for imputing and simulating games and predicting a March Madness winner
@@ -26,9 +30,10 @@
 * Winning teams are awarded wins with scores based on their actual winning games
 * Run the tournament!
 
-usage: python3 ball_lightning.py seed season_file.txt bracket_file.txt
+usage: python3 ncaa_simulator.py seed season_file.txt bracket_file.txt
 
 example season and bracket files in test_data
+
 seed = your favorite integer
 
 
