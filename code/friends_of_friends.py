@@ -172,20 +172,18 @@ class Bracket_Scorer:
 
 if __name__ == "__main__":
 
-    """
+    
     fof = Friends_Of_Friends_Graph()
     fof.load_graph("../historical_data/NCAA_Hoops_Results_2022_Final.csv")
     win_recs = fof.get_scores_for_bracket("../historical_data/2022_results.csv")
     
     sim = Friends_Of_Friends_Simulator("../historical_data/2022_results.csv", win_recs)
     results = sim.simulate_tournament()
-    for res in results:
-        print(res)
-    """
+    
 
     scorer = Bracket_Scorer()
-    bracket_data = scorer.read_bracket_file("../historical_data/2022_results.csv")
-    s = scorer.compare_brackets(bracket_data, bracket_data)
+    true_results = scorer.read_bracket_file("../historical_data/2022_results.csv")
+    s = scorer.compare_brackets(true_results, results)
     print(s)
 
 
