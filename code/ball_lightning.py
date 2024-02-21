@@ -197,7 +197,7 @@ class ball_lightning:
                 score_diff = score2 - score1
                 htp = self.home_team_penalty[location != 'H']
             else: 
-                tie = simulate_tournament
+                tie = True
             
             if not tie:
                 w = (self.recency_decay ** delta) * htp * (self.score_diff_base ** score_diff)
