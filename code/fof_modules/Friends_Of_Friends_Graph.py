@@ -116,9 +116,13 @@ class Friends_Of_Friends_Graph:
         for team in tournament_scores:
             d = [[team, year, tournament_best_rounds[team]] + tournament_scores[team]]
             res.append(d)
+        
+        return(res)
 
 
 if __name__ == "__main__":
     fofg = Friends_Of_Friends_Graph()
+
+    years = "16", "17", "18", "19", "21", "22"
     fofg.load_graph("../historical_data/NCAA_Hoops_Results_2022_Final.csv")
     fofg.get_scores_by_tournament_round("../historical_data/2022_results.csv", "2022")
