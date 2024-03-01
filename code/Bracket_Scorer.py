@@ -32,11 +32,3 @@ class Bracket_Scorer:
         
         return score_sum
         
-    def read_bracket_file(self, fname):
-
-        bracket = []
-        with open(fname) as bracket_file:
-            bracket_reader = csv.reader(bracket_file)
-            for game in bracket_reader:
-                bracket.append(game)
-        return(bracket)
